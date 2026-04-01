@@ -1,0 +1,95 @@
+[project]
+name = "gaussian-avatar"
+version = "0.1.0"
+description = "Animatable 3D Gaussian avatar system with mesh-embedded Gaussians"
+readme = "README.md"
+authors = [
+    { name = "Anonymous", email = "anonymous@example.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0.0",
+    "numpy>=1.24.0",
+    "smplx>=0.1.28",
+    "chumpy",
+    "pytest>=7.0.0",
+    "scipy>=1.15.3",
+    "opencv-python>=4.8.0",
+    "h5py>=3.10.0",
+    "matplotlib>=3.7.0",
+    "lpips>=0.1.4",
+    "torchmetrics>=0.11.0",
+    "pytorch-msssim>=1.0.0",
+    "wandb>=0.15.0",
+    "tqdm>=4.60.0",
+    "pyyaml>=6.0",
+    "codegraphcontext>=0.2.2",
+    "b2",
+    "trimesh>=4.11.1",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "trimesh>=3.0.0",
+    "matplotlib>=3.7.0",
+    "h5py>=3.0.0",
+    "pyglet>=2.0.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "trimesh>=3.0.0",
+    "matplotlib>=3.7.0",
+    "h5py>=3.0.0",
+    "pyglet>=2.0.0",
+]
+cuda = [
+    "gsplat>=1.0.0",
+]
+mhr = [
+    "pymomentum-cpu>=0.1.90; python_version >= '3.12'",
+    "mhr; python_version >= '3.12'",
+    "trimesh>=4.8.3",
+]
+mhr-gpu = [
+    "pymomentum-gpu>=0.1.90; python_version >= '3.12'",
+    "mhr; python_version >= '3.12'",
+    "trimesh>=4.8.3",
+]
+mps = [
+    "opensplat-metal",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.28,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+chumpy = { git = "https://github.com/mattloper/chumpy.git" }
+opensplat-metal = { git = "" }
+torch = [
+    { index = "pytorch-cu126", marker = "platform_system != 'Darwin'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[tool.uv.extra-build-dependencies]
+chumpy = ["pip"]
+
+[tool.uv]
+package = true
+conflicts = [
+    [
+        { extra = "mhr" },
+        { extra = "mhr-gpu" },
+    ],
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

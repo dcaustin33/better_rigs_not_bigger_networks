@@ -1,0 +1,137 @@
+# female-3-casual with MHR body model — no mask erosion
+#
+# Matched hyperparameters from baseline experiment.
+
+training:
+  # Body model
+  model:
+    model_type: mhr
+    model_path: mesh_models/mhr/assets
+    gender: female
+    lod: 1
+
+  # Output
+  output_dir: output
+  experiment_name: female-3-casual-mhr
+
+  # Weights & Biases
+  wandb:
+    project: gaussian-avatar
+    name: female-3-casual-mhr
+
+  # Data loading
+  data:
+    data_root: datasets/people_snapshot_corrected
+    subjects: [female-3-casual]
+    dataset_format: corrected
+    stop_frame: 456
+    skip: 4
+    undistort: true
+    preprocess_masks: true
+    mask_erode_kernel: 0
+
+  # Spherical Harmonics disabled — RGB color only
+  use_sh: false
+
+  # General
+  num_iterations: 50000
+  batch_size: 1
+  gradient_accumulation_steps: 1
+  num_gaussians: 30000
+  image_size: [540, 540]
+  max_stretch: 2
+
+  resolution_schedule:
+    - iteration: 0
+      resolution: [540, 540]
+
+  # Learning rates - Gaussian parameters
+  lr_position: 0.0016
+  lr_rotation: 0.001
+  lr_scale: 0.005
+  lr_color: 0.0025
+  lr_opacity: 0.05
+
+
+  # LR schedule
+  lr_decay_start: 0
+  lr_decay_rate: 0.1
+  lr_decay_steps: 50000
+
+  # Gradient clipping (0 to disable)
+  grad_clip: 0
+
+  # Logging intervals
+  log_interval: 300
+  eval_interval: 5000
+  checkpoint_interval: 10000
+
+
+  # Image saving during training (0 to disable)
+  save_images_interval: 1000
+  save_images_dir: null
+  save_gt_images: true
+  save_all_last_n: 200
+
+  # Image saving during evaluation
+  num_eval_images_to_save: 50
+
+  # Random background for background-agnostic alpha learning
+  background_color: null
+
+  # Densification
+  densification:
+    start_iter: 2000
+    interval: 500
+    stop_iter: 35000
+    grad_threshold: 1.0e-6
+    min_opacity: 0.01
+    split_scale_threshold: 0.2
+    clone_position_noise: 0.01
+    opacity_reset_interval: 3000
+    opacity_reset_value: 0.1
+    max_gaussians: 100000
+    force_split_scale: 0.5
+    protect_all_triangles: false
+
+  # Loss weights — L1/SSIM equal, reduced LPIPS
+  loss_weights:
+    lambda_l1: 1.0
+    lambda_l2: 0.0
+    lambda_ssim: 1.0
+    lambda_lpips: 0.4
+    lambda_mask: 0.3
+    lambda_position_reg: 0.0
+    lambda_scale_reg: 0.0
+    lambda_offset_reg: 0.0
+    lambda_offset_color_reg: 0.0
+    lambda_opacity_binary: 0.01
+    lambda_aiap_position: 0.0
+    lambda_aiap_covariance: 0.0
+    lpips_net: vgg
+    boundary_weight: 0.0
+    boundary_kernel_size: 11
+    lambda_ssl_aiap_position: 0.0
+    lambda_ssl_aiap_covariance: 0.0
+    lambda_ssl_silhouette: 0.0
+    mask_reconstruction_loss: true
+
+  # Loss thresholds
+  loss_thresholds:
+    epsilon_position: 1.0
+    epsilon_scale: 0.5
+    k_neighbors: 5
+
+  # Deformation MLP disabled
+  disable_offsets: true
+
+
+  # Per-frame parameter optimization
+  per_frame_params:
+    enabled: false
+    optimize_pose: false
+    optimize_betas: false
+    optimize_trans: false
+    lr_pose: 1.0e-5
+    lr_betas: 1.0e-5
+    lr_trans: 1.0e-4

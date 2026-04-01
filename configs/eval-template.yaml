@@ -1,0 +1,53 @@
+# Gaussian Avatar - Default Evaluation Configuration
+#
+# All fields shown with their default values. Remove or comment out
+# any field to use its default. Pass to evaluation with:
+#   uv run python scripts/evaluate.py --config configs/eval_default.yaml ...
+#
+# CLI args (--checkpoint, --data-root, etc.) override values here.
+
+evaluation:
+  # Path to trained model checkpoint (.pt file)
+  # Required: must be set via CLI (--checkpoint) or here
+  checkpoint: null
+
+  # Data
+  data:
+    data_root: null
+    # Subject names to evaluate on. null = use checkpoint config.
+    subjects: null
+    # Dataset format: "auto", "public", or "corrected"
+    dataset_format: auto
+    # Frame index to start evaluation at. null = start of last 25% (test split).
+    start_frame: null
+    # Frame index separating train/test. Overridden by start_frame if both set.
+    stop_frame: null
+    # Frame skip stride. E.g. skip: 4 evaluates every 4th test frame.
+    # null = evaluate every frame (or inherit from checkpoint config).
+    skip: null
+    num_workers: 4
+
+  image_size: [512, 512]
+  batch_size: 1
+
+  # Model
+  model_path: mesh_models
+  model_type: smpl
+  gender: male
+  # Number of Gaussians. null = number of mesh faces.
+  num_gaussians: null
+  # Deformation MLP disabled
+  disable_offsets: true
+
+  # Output
+  output_dir: output/eval
+  save_images: false
+  num_images: 10
+  # Save diagnostic images (error heatmaps, alpha-vs-mask, boundary analysis)
+  diagnostic: false
+  num_diagnostic: 10
+
+  # Weights & Biases
+  wandb: false
+  wandb_name: null
+  wandb_project: gaussian-avatar-eval

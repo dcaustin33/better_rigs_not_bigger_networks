@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+datasets/
+mesh_models/
+*.zip
+output/
+cuda_deps/
+wandb/
+.mcp.json
+.mhr_deps/
