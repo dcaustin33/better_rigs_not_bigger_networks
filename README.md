@@ -1,7 +1,5 @@
 # Better Rigs, Not Bigger Networks: A Body Model Ablation for Gaussian Avatars
 
-**Anonymous CVPR 2026 Submission**
-
 Recent 3D Gaussian splatting methods built atop SMPL achieve remarkable visual fidelity while continually increasing the complexity of the overall training architecture. We demonstrate that much of this complexity is unnecessary. By replacing SMPL with the Momentum Human Rig (MHR), estimated via SAM-3D-Body, a minimal pipeline with no learned deformations or pose-dependent corrections achieves the highest reported PSNR and competitive SSIM and LPIPS on PeopleSnapshot and ZJU-MoCap. To disentangle pose estimation quality from body model representational capacity, we perform controlled ablations: translating SAM-3D-Body meshes back to SMPL-X, and translating the original dataset's SMPL poses into MHR, both retrained under identical conditions. These ablations confirm that body model expressiveness has been a primary bottleneck in accurate reconstruction, with both mesh representational capacity and pose estimation quality contributing meaningfully to the full pipeline's gains.
 
 Key findings:
